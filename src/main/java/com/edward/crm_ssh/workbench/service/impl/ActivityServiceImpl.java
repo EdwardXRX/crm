@@ -29,6 +29,7 @@ import java.util.Map;
 @Service("ActivityServiceImpl")
 public class ActivityServiceImpl implements ActivityService {
 
+
     @Override
     public boolean saveRemark(ActivityRemark ar) {
         boolean flag = true;
@@ -151,6 +152,43 @@ public class ActivityServiceImpl implements ActivityService {
         else
             flag = false;
 
+        return flag;
+    }
+
+    @Override
+    public boolean updateRemark(ActivityRemark ar) {
+        int count = remarkDao.updateRemark(ar);
+        boolean flag = true;
+        if(count!= 1)
+            flag = false;
+        return flag;
+    }
+
+    @Override
+    public boolean delete(String[] ids) {
+
+        boolean flag = true;
+        //首先查询我们需要删除的备注数量
+        int count = remarkDao.getCountByAids(ids);
+
+        //然后再查询我们删除的备注条数
+        int count2 = remarkDao.deleteByAids(ids);
+        //两者进行比较，如果成功之后再删除我们的真正要删除的活动记录
+
+        if(count != count2)
+        {
+            System.out.println("不成功");
+            flag = false;
+        }
+
+        int count3 = activityDao.delete(ids);
+
+        if(count3 != ids.length)
+        {
+            System.out.println("删除活动失败");
+            flag = false;
+        }
+        //返回一个标志位
         return flag;
     }
 

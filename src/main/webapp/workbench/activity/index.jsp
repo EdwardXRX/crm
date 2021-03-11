@@ -26,17 +26,19 @@
     <script type="text/javascript">
 
         $(function () {
-            $("#addBtn").click(function () {
 
-                    /*时间拾取器*/
-                    $(".time").datetimepicker({
-                        minView: "month",
-                        language: 'zh-CN',
-                        format: 'yyyy-mm-dd',
-                        autoclose: true,
-                        todayBtn: true,
-                        pickerPosition: "bottom-left"
-                    });
+            /*时间拾取器*/
+            $(".time").datetimepicker({
+                minView: "month",
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayBtn: true,
+                pickerPosition: "bottom-left"
+            });
+
+
+            $("#addBtn").click(function () {
 
 
                     $.ajax({
@@ -68,16 +70,6 @@
 
 
             $("#editBtn").click(function () {
-
-                /*时间拾取器*/
-                $(".time").datetimepicker({
-                    minView: "month",
-                    language: 'zh-CN',
-                    format: 'yyyy-mm-dd',
-                    autoclose: true,
-                    todayBtn: true,
-                    pickerPosition: "bottom-left"
-                });
 
                 var $xz = $("input[name=xz]:checked");
 
@@ -166,7 +158,6 @@
                 })
 
             });
-
 
             $("#saveBtn").click(function () {
 
@@ -579,13 +570,13 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control" type="text" id="search-startDate"/>
+                        <input class="form-control time" type="text" id="search-startDate"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control" type="text" id="search-endDate">
+                        <input class="form-control time" type="text" id="search-endDate">
                     </div>
                 </div>
 

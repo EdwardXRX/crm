@@ -169,20 +169,20 @@ public class ActivityController {
         PrintJson.printJsonFlag(response, flag);
     }
 
-    /*@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     private void delete(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入到活动删除操作");
 
         String ids[] = request.getParameterValues("id");
 
+
         boolean flag = as.delete(ids);
 
         //传到前端
-        PrintJson.printJsonFlag(response,flag);
+        PrintJson.printJsonFlag(response, flag);
 
 
-
-    }*/
+    }
 
     @RequestMapping(value = "/detail.do", method = RequestMethod.GET)
     private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -237,18 +237,11 @@ public class ActivityController {
     private void saveRemark(HttpSession httpSession, ActivityRemark ar, HttpServletResponse response) {
         System.out.println("执行保存评论操作");
 
-       /* String activityId = request.getParameter("activityId");
-        String noteContent = request.getParameter("noteContent");*/
-
         String id = UUIDUtil.getUUID();
         String createTime = DateTimeUtil.getSysTime();
         String createBy = ((User) httpSession.getAttribute("user")).getName();
         String editFlag = "0";
 
-        /*  ActivityRemark ar = new ActivityRemark();*/
-
-     /*   ar.setActivityId(activityId);
-        ar.setNoteContent(noteContent);*/
         ar.setId(id);
         ar.setCreateTime(createTime);
         ar.setCreateBy(createBy);
@@ -256,7 +249,35 @@ public class ActivityController {
 
         boolean flag = as.saveRemark(ar);
 
-        //除了返回flag，还有ar
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("success", flag);
+        map.put("ar", ar);
+
+        PrintJson.printJsonObj(response, map);
+
+    }
+
+    @RequestMapping(value = "/updateRemark.do", method = RequestMethod.POST)
+    private void updateRemark(ActivityRemark ar, HttpSession httpSession, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行更新评论操作");
+
+/*        String id = request.getParameter("id");
+        String noteContent = request.getParameter("noteContent");*/
+
+        String editTime = DateTimeUtil.getSysTime();
+        String editBy = ((User) httpSession.getAttribute("user")).getName();
+        String editFlag = "1";
+
+        /*   ActivityRemark ar = new ActivityRemark();*/
+        ar.setEditFlag(editFlag);
+       /* ar.setId(id);
+        ar.setNoteContent(noteContent);*/
+        ar.setEditBy(editBy);
+        ar.setEditTime(editTime);
+
+
+        boolean flag = as.updateRemark(ar);
 
         Map<String, Object> map = new HashMap<>();
 
