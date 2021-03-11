@@ -8,6 +8,7 @@ import com.edward.crm_ssh.utils.UUIDUtil;
 import com.edward.crm_ssh.vo.PaginationVO;
 import com.edward.crm_ssh.workbench.dao.ActivityDao;
 import com.edward.crm_ssh.workbench.domain.Activity;
+import com.edward.crm_ssh.workbench.domain.ActivityRemark;
 import com.edward.crm_ssh.workbench.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -183,7 +184,7 @@ public class ActivityController {
 
     }*/
 
-    @RequestMapping(value = "/detail.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/detail.do", method = RequestMethod.GET)
     private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         System.out.println("进入细节");
@@ -193,10 +194,76 @@ public class ActivityController {
         Activity a = as.detail(id);
 
 
+        request.setAttribute("a", a);
 
-        request.setAttribute("a",a);
+        request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request, response);
 
-        request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request,response);
+    }
+
+    @RequestMapping(value = "/getRemarkListByAid.do", method = RequestMethod.GET)
+    private void getRemarkListByAid(String activityId, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行通过id获取评论列表");
+
+        //String activityId = request.getParameter("activityId");
+
+        System.out.println("activityId:" + activityId);
+
+        List<ActivityRemark> arList = as.getRemarkListByAid(activityId);
+
+        if (arList == null)
+            System.out.println("空");
+        else
+            System.out.println("不为空");
+
+        PrintJson.printJsonObj(response, arList);
+
+
+    }
+
+    @RequestMapping(value = "/deleteRemark.do", method = RequestMethod.POST)
+    private void deleteRemark(String id, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行删除评论操作");
+
+        //String id = request.getParameter("id");
+
+        boolean flag = as.deleteRemark(id);
+
+        PrintJson.printJsonFlag(response, flag);
+
+
+    }
+
+    @RequestMapping(value = "/saveRemark.do", method = RequestMethod.POST)
+    private void saveRemark(HttpSession httpSession, ActivityRemark ar, HttpServletResponse response) {
+        System.out.println("执行保存评论操作");
+
+       /* String activityId = request.getParameter("activityId");
+        String noteContent = request.getParameter("noteContent");*/
+
+        String id = UUIDUtil.getUUID();
+        String createTime = DateTimeUtil.getSysTime();
+        String createBy = ((User) httpSession.getAttribute("user")).getName();
+        String editFlag = "0";
+
+        /*  ActivityRemark ar = new ActivityRemark();*/
+
+     /*   ar.setActivityId(activityId);
+        ar.setNoteContent(noteContent);*/
+        ar.setId(id);
+        ar.setCreateTime(createTime);
+        ar.setCreateBy(createBy);
+        ar.setEditFlag(editFlag);
+
+        boolean flag = as.saveRemark(ar);
+
+        //除了返回flag，还有ar
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("success", flag);
+        map.put("ar", ar);
+
+        PrintJson.printJsonObj(response, map);
 
     }
 }

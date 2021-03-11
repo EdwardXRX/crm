@@ -2,8 +2,10 @@ package com.edward.crm_ssh.workbench.service;
 
 import com.edward.crm_ssh.vo.PaginationVO;
 import com.edward.crm_ssh.workbench.domain.Activity;
+import com.edward.crm_ssh.workbench.domain.ActivityRemark;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,4 +31,10 @@ public interface ActivityService {
 
 
     Activity detail(String id);
+
+    List<ActivityRemark> getRemarkListByAid(String activityId);
+
+    boolean deleteRemark(String id);
+
+    boolean saveRemark(ActivityRemark ar);
 }

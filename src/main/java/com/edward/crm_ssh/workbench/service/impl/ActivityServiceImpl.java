@@ -4,7 +4,9 @@ import com.edward.crm_ssh.settings.dao.UserDao;
 import com.edward.crm_ssh.settings.domain.User;
 import com.edward.crm_ssh.vo.PaginationVO;
 import com.edward.crm_ssh.workbench.dao.ActivityDao;
+import com.edward.crm_ssh.workbench.dao.ActivityRemarkDao;
 import com.edward.crm_ssh.workbench.domain.Activity;
+import com.edward.crm_ssh.workbench.domain.ActivityRemark;
 import com.edward.crm_ssh.workbench.service.ActivityService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,18 @@ import java.util.Map;
 
 @Service("ActivityServiceImpl")
 public class ActivityServiceImpl implements ActivityService {
+
+    @Override
+    public boolean saveRemark(ActivityRemark ar) {
+        boolean flag = true;
+
+        int count = remarkDao.saveRemark(ar);
+        if(count != 1)
+            flag = false;
+
+        return flag;
+    }
+
     @Override
     public Activity detail(String id) {
 
@@ -39,6 +53,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private ActivityRemarkDao remarkDao;
 
 
     @Override
@@ -113,5 +130,28 @@ public class ActivityServiceImpl implements ActivityService {
         return map;
     }
 
+    @Override
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+
+        List<ActivityRemark> arList = remarkDao.getRemarkListByAid(activityId);
+        return arList;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+
+        int count = remarkDao.deleteRemark(id);
+
+        boolean flag = true;
+
+        if(count == 1)
+        {
+            flag = true;
+        }
+        else
+            flag = false;
+
+        return flag;
+    }
 
 }
