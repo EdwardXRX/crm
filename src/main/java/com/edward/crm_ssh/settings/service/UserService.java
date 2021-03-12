@@ -1,5 +1,6 @@
 package com.edward.crm_ssh.settings.service;
 
+import com.edward.crm_ssh.exception.UpdatePwdException;
 import com.edward.crm_ssh.settings.domain.User;
 
 import javax.security.auth.login.LoginException;
@@ -16,7 +17,9 @@ import java.util.List;
  */
 public interface UserService {
 
-    User login(String loginAct, String loginPwd, String ip) throws LoginException;
+    User login(String loginAct, String loginPwd, String ip) throws LoginException, com.edward.crm_ssh.exception.LoginException;
 
     List<User> getUserList();
+
+    Boolean updatePwd(String id,String loginAct, String oldPwd, String newPwd) throws UpdatePwdException;
 }

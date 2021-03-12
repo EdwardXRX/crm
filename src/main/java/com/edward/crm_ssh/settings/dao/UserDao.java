@@ -19,4 +19,6 @@ public interface  UserDao {
     User login(Map<String, Object> map);
 
     List<User> getUserList();
+
+    int updatePwd(Map<String, Object> map);
 }

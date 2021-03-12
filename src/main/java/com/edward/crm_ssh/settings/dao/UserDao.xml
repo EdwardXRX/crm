@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
- PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
- "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.edward.crm_ssh.settings.dao.UserDao">
 
@@ -13,9 +13,11 @@
             select * from tbl_user
     </select>
 
-	
-	
-	
+    <update id="updatePwd">
+        UPDATE tbl_user set loginPwd = #{newPwd} where id= #{id}
+    </update>
+
+
 </mapper>
 
 
