@@ -88,6 +88,11 @@ public class UserController {
         oldPwd = MD5Util.getMD5(oldPwd);
         newPwd = MD5Util.getMD5(newPwd);
 
+        System.out.println("oldPwd=======" + oldPwd);
+        System.out.println("newPwd=======" + newPwd);
+
+        System.out.println("name:       " + newPwd.getClass().getName());
+
         String loginAct = ((User) httpSession.getAttribute("user")).getLoginAct();
         String id = ((User) httpSession.getAttribute("user")).getId();
 

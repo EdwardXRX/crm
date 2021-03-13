@@ -98,20 +98,13 @@
                                 $("#confirmPwd").val("");
                                 $("#msg").html(data.msg);
                             }
-
                         }
                     })
                 }
-
-
             })
-
-
         })
         ;
-
     </script>
-
 </head>
 <body>
 
@@ -157,21 +150,21 @@
                     <div class="form-group">
                         <label for="oldPwd" class="col-sm-2 control-label">原密码</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="oldPwd" style="width: 200%;">
+                            <input type="password" class="form-control" id="oldPwd" style="width: 200%;">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="newPwd" class="col-sm-2 control-label">新密码</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="newPwd" style="width: 200%;">
+                            <input type="password" class="form-control" id="newPwd" style="width: 200%;">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="confirmPwd" class="col-sm-2 control-label">确认密码</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="confirmPwd" style="width: 200%;">
+                            <input type="password" class="form-control" id="confirmPwd" style="width: 200%;">
                         </div>
                     </div>
                 </form>
@@ -223,7 +216,7 @@
                 <a href="javascript:void(0)" style="text-decoration: none; color: white;" class="dropdown-toggle"
                    data-toggle="dropdown">
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                    <span class="glyphicon glyphicon-user"></span>  ${sessionScope.user.name}  <span class="caret"></span>
+                    <span class="glyphicon glyphicon-user"></span> ${sessionScope.user.name} <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>

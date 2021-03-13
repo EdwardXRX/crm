@@ -3,6 +3,11 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
 
+<%
+    HttpSession session111 = request.getSession();
+    session111.invalidate();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +20,9 @@
     <script>
         $(function () {
 
-            if(window.top!=window){
-                window.top.location=window.location;
+            if (window.top != window) {
+                window.top.location = window.location;
             }
-
-
             $("#loginAct").val("");
             //登录页面第一时间，账号输入框获得焦点
             $("#loginAct").focus();
@@ -27,14 +30,11 @@
             $("#submitBtn").click(function () {
                 login();
             });
-
             $(window).keydown(function (event) {
                 if (event.keycode == 13) {
                     login();
                 }
             });
-
-
         })
 
         function login() {
@@ -52,14 +52,14 @@
 
             //登录验证的ajax
             $.ajax({
-                url : "settings/user/login.do",
-                data : {
-                    "loginAct" : loginAct,
-                    "loginPwd" : loginPwd
+                url: "settings/user/login.do",
+                data: {
+                    "loginAct": loginAct,
+                    "loginPwd": loginPwd
                 },
-                type : "post",
-                dataType : "json",
-                success : function (data) {
+                type: "post",
+                dataType: "json",
+                success: function (data) {
                     /*
                     data : {
                     "success" : true/false,
@@ -67,11 +67,9 @@
                     }
                      */
 
-                    if(data.success)
-                    {
+                    if (data.success) {
                         window.location.href = "workbench/index.jsp";
-                    }else
-                    {
+                    } else {
                         $("#msg").html(data.msg);
                     }
                 }

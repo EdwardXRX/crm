@@ -14,7 +14,7 @@
 
 
     <!--声明数据库信息文件jdbc.properties-->
-    <context:property-placeholder location="classpath:/conf/jdbc.properties" />
+    <context:property-placeholder location="classpath:/jdbc.properties" />
 
     <!--声明数据源，dataSource，作用是连接数据库的-->
     <bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -30,7 +30,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--set注入，把数据库连接池赋值给了dataResource属性-->
         <property name="dataSource" ref="myDataSource"></property>
-        <property name="configLocation" value="classpath:conf/mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
     </bean>
 
     <!--settings.dao,workbench.dao-->
