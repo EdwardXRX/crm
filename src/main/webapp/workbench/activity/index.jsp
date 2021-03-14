@@ -65,8 +65,7 @@
                         }
 
                     })
-                }
-            )
+                });
 
 
             $("#editBtn").click(function () {

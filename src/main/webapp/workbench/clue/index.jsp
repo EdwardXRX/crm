@@ -228,6 +228,7 @@
                             $("#edit-owner").html(html);
 
                             //处理单条Clue
+                            $("#edit-id").val(data.c.id);
                             $("#edit-fullname").val(data.c.fullname);
                             $("#edit-id").val(data.c.id);
                             $("#edit-owner").val(data.c.owner);
@@ -243,6 +244,7 @@
                             $("#edit-phone").val(data.c.phone);
                             $("#edit-website").val(data.c.website);
                             $("#edit-email").val(data.c.email);
+                            $("#edit-address").val(data.c.address);
 
                             //所有修改之后，就可以打开模态窗口了
                             $("#editClueModal").modal("show");
@@ -254,7 +256,60 @@
 
                 }
 
-            })});
+            });
+
+            /*更新操作*/
+            $("#updateBtn").click(function () {
+
+                var $xz = $("input[name=xz]:checked");
+                var id = $xz.val();
+
+                $.ajax({
+                    url: "workbench/clue/update.do",
+                    data: {
+                        "id": id,
+                        "fullname": $.trim($("#edit-fullname").val()),
+                        "appellation": $.trim($("#edit-appellation").val()),
+                        "owner": $.trim($("#edit-owner").val()),
+                        "company": $.trim($("#edit-company").val()),
+                        "job": $.trim($("#edit-job").val()),
+                        "email": $.trim($("#edit-email").val()),
+                        "phone": $.trim($("#edit-phone").val()),
+                        "website": $.trim($("#edit-website").val()),
+                        "mphone": $.trim($("#edit-mphone").val()),
+                        "state": $.trim($("#edit-state").val()),
+                        "source": $.trim($("#edit-source").val()),
+                        "description": $.trim($("#edit-description").val()),
+                        "contactSummary": $.trim($("#edit-contactSummary").val()),
+                        "nextContactTime": $.trim($("#edit-nextContactTime").val()),
+                        "address": $.trim($("#edit-address").val())
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+
+                            //修改成功后，就局部刷新
+                            pageList($("#cluePage").bs_pagination('getOption', 'currentPage')
+                                , $("#cluePage").bs_pagination('getOption', 'rowsPerPage'));
+
+
+                            //所有修改之后，就可以打开模态窗口了
+                            $("#editClueModal").modal("hide");
+                        } else {
+                            alert("修改失败");
+                        }
+
+
+                    }
+
+                })
+
+            });
+
+
+
+        });
 
 
         //页表方法
@@ -364,6 +419,7 @@
 
 
                 <form class="form-horizontal" id="create-form" role="form">
+
 
                     <div class="form-group">
                         <label for="create-clueOwner" class="col-sm-2 control-label">所有者<span
@@ -508,6 +564,8 @@
             <div class="modal-body">
 
                 <form class="form-horizontal" role="form">
+
+                    <%--这是我们编辑用的id--%>
                     <input id="edit-id" type="hidden"/>
 
                     <div class="form-group">
@@ -627,7 +685,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="edit-nextContactTime" class="col-sm-2 control-label"></label>
+                            <label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
                             <div class="col-sm-10" style="width: 300px;">
                                 <input type="text" class="form-control time" id="edit-nextContactTime"
                                        value="2017-05-01">
@@ -650,7 +708,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+                <button type="button" class="btn btn-primary" id="updateBtn">更新</button>
             </div>
         </div>
     </div>
@@ -776,8 +834,8 @@
                     <td><input type="checkbox" id="qx"/></td>
                     <td>名称</td>
                     <td>公司</td>
-                    <td>公司座机</td>
                     <td>手机</td>
+                    <td>公司座机</td>
                     <td>线索来源</td>
                     <td>所有者</td>
                     <td>线索状态</td>

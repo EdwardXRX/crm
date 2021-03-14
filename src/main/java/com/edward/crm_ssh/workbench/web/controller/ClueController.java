@@ -8,11 +8,14 @@ import com.edward.crm_ssh.utils.UUIDUtil;
 import com.edward.crm_ssh.vo.PaginationVO;
 import com.edward.crm_ssh.workbench.domain.Clue;
 import com.edward.crm_ssh.workbench.service.ClueService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import sun.java2d.pipe.SpanClipRenderer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +47,6 @@ public class ClueController {
     @Autowired
     @Qualifier("UserServiceImpl")
     private UserService us;
-
-
 
 
     @RequestMapping(value = "/pageList.do", method = RequestMethod.GET)
@@ -117,11 +118,11 @@ public class ClueController {
 
         List<User> userList = us.getUserList();
 
-        PrintJson.printJsonObj(response,userList);
+        PrintJson.printJsonObj(response, userList);
     }
 
     @RequestMapping(value = "/save.do", method = RequestMethod.POST)
-    private void save(HttpSession httpSession,Clue clue, HttpServletRequest request, HttpServletResponse response) {
+    private void save(HttpSession httpSession, Clue clue, HttpServletRequest request, HttpServletResponse response) {
         System.out.println("保存线索用户");
 
         //工具类获取一个独一无二的id
@@ -131,7 +132,7 @@ public class ClueController {
         String createTime = DateTimeUtil.getSysTime();
 
         //获取当前session中的登陆人姓名
-        String createBy = ((User)httpSession.getAttribute("user")).getName();
+        String createBy = ((User) httpSession.getAttribute("user")).getName();
 
         //直接将前端封装过来的类设置id,createBy,createTime。其他信息springMVC已经帮忙封装好了
         clue.setId(id);
@@ -140,7 +141,53 @@ public class ClueController {
 
         boolean flag = cs.save(clue);
 
-        PrintJson.printJsonFlag(response,flag);
+        PrintJson.printJsonFlag(response, flag);
     }
 
+    @RequestMapping(value = "/getUserListAndClue.do", method = RequestMethod.GET)
+    private void getUserListAndClue(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("为修改模态窗口获取用户信息和当前修改的线索信息");
+
+        String id = request.getParameter("id");
+
+
+        Map<String, Object> map = cs.getUserListAndClue(id);
+
+
+        PrintJson.printJsonObj(response, map);
+    }
+
+    @RequestMapping(value = "/update.do", method = RequestMethod.POST)
+    private void update(HttpSession httpSession, Clue clue, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行修改线索操作");
+
+
+        //设置编辑人和编辑时间
+        clue.setEditBy(((User) httpSession.getAttribute("user")).getName());
+        clue.setEditTime(DateTimeUtil.getSysTime());
+
+        Boolean flag = cs.update(clue);
+
+        PrintJson.printJsonFlag(response, flag);
+
+    }
+
+    @RequestMapping(value = "/deleteIds.do", method = RequestMethod.POST)
+    private void deleteIds(String[] id,HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("执行线索删除操作");
+
+
+     /*   String ids[] = request.getParameterValues("id");
+        for (int i = 0; i < ids.length; i++) {
+            System.out.println(ids[i]);
+        }*/
+
+
+        boolean flag = cs.deleteIds(id);
+
+        //传到前端
+        PrintJson.printJsonFlag(response, flag);
+
+
+    }
 }

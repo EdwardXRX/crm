@@ -20,5 +20,9 @@ public interface  ClueService {
 
     boolean save(Clue clue);
 
+    boolean deleteIds(String[] ids);
 
+    Map<String, Object> getUserListAndClue(String id);
+
+    Boolean update(Clue clue);
 }

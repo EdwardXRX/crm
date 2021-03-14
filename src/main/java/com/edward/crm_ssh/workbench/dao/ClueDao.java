@@ -23,4 +23,10 @@ public interface ClueDao {
     int getTotalByCondition(Map<String, Object> map);
 
     int save(Clue clue);
+
+    Clue getById(String id);
+
+    int update(Clue clue);
+
+    int deleteIds(String[] ids);
 }
