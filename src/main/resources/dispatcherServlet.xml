@@ -13,13 +13,13 @@
 
 
 
-    <!--注册视图解析器（InternalResourceViewResolver）：帮助我们处理试图的路径和拓展名；生成视图对象-->
+    <!--注册视图解析器（InternalResourceViewResolver）：帮助我们处理试图的路径和拓展名；生成视图对象
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <!--前缀，表示视图所在的路径-->
+        &lt;!&ndash;前缀，表示视图所在的路径&ndash;&gt;
         <property name="prefix" value="/WEB-INF/workbench/"></property>
-        <!--后缀：表示视图的拓展名-->
+        &lt;!&ndash;后缀：表示视图的拓展名&ndash;&gt;
         <property name="suffix" value=".jsp"></property>
-    </bean>
+    </bean>-->
 
 
     <mvc:annotation-driven/>

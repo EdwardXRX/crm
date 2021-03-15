@@ -42,4 +42,9 @@ public interface ActivityService {
 
     boolean delete(String[] ids);
 
+    List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map);
+
+    List<Activity> getActivityListByName(String aname);
 }

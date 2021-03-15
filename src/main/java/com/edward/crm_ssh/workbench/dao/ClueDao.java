@@ -29,4 +29,12 @@ public interface ClueDao {
     int update(Clue clue);
 
     int deleteIds(String[] ids);
+
+    Clue detail(String id);
+
+    int unbund(String id);
+
+    int bundActivity(List<Map<String, String>> list);
+
+    int delete(String clueId);
 }

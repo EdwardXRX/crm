@@ -29,13 +29,22 @@ import java.util.Map;
 @Service("ActivityServiceImpl")
 public class ActivityServiceImpl implements ActivityService {
 
+    @Override
+    public List<Activity> getActivityListByName(String aname) {
+
+        List<Activity> aList = activityDao.getActivityListByName(aname);
+
+
+        return aList;
+    }
+
 
     @Override
     public boolean saveRemark(ActivityRemark ar) {
         boolean flag = true;
 
         int count = remarkDao.saveRemark(ar);
-        if(count != 1)
+        if (count != 1)
             flag = false;
 
         return flag;
@@ -70,10 +79,9 @@ public class ActivityServiceImpl implements ActivityService {
         //取得dataList
         List<Activity> dataList = activityDao.getActivityListByCondition(map);
 
-        if(dataList == null){
+        if (dataList == null) {
             System.out.println("dataList为空");
-        }
-        else System.out.println("dataList不为空");
+        } else System.out.println("dataList不为空");
         //封装成vo
 
         PaginationVO<Activity> vo = new PaginationVO<Activity>();
@@ -88,11 +96,10 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public boolean save(Activity a) {
-        int count  = activityDao.save(a);
+        int count = activityDao.save(a);
 
         boolean flag = true;
-        if(count != 1)
-        {
+        if (count != 1) {
             flag = false;
         }
         return flag;
@@ -104,8 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
         int count = activityDao.update(a);
 
         boolean flag = true;
-        if(count != 1)
-        {
+        if (count != 1) {
             flag = false;
         }
         return flag;
@@ -121,10 +127,10 @@ public class ActivityServiceImpl implements ActivityService {
         Activity a = activityDao.getActivityById(id);
 
         //将uList打包进map
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
-        map.put("uList",uList);
-        map.put("a",a);
+        map.put("uList", uList);
+        map.put("a", a);
 
         //返回map
 
@@ -145,11 +151,9 @@ public class ActivityServiceImpl implements ActivityService {
 
         boolean flag = true;
 
-        if(count == 1)
-        {
+        if (count == 1) {
             flag = true;
-        }
-        else
+        } else
             flag = false;
 
         return flag;
@@ -159,7 +163,7 @@ public class ActivityServiceImpl implements ActivityService {
     public boolean updateRemark(ActivityRemark ar) {
         int count = remarkDao.updateRemark(ar);
         boolean flag = true;
-        if(count!= 1)
+        if (count != 1)
             flag = false;
         return flag;
     }
@@ -175,21 +179,36 @@ public class ActivityServiceImpl implements ActivityService {
         int count2 = remarkDao.deleteByAids(ids);
         //两者进行比较，如果成功之后再删除我们的真正要删除的活动记录
 
-        if(count != count2)
-        {
+        if (count != count2) {
             System.out.println("不成功");
             flag = false;
         }
 
         int count3 = activityDao.delete(ids);
 
-        if(count3 != ids.length)
-        {
+        if (count3 != ids.length) {
             System.out.println("删除活动失败");
             flag = false;
         }
         //返回一个标志位
         return flag;
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+
+        List<Activity> aList = activityDao.getActivityListByClueId(clueId);
+
+        return aList;
+    }
+
+    @Override
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+
+
+        List<Activity> aList = activityDao.getActivityListByNameAndNotByClueId(map);
+
+        return aList;
     }
 
 }

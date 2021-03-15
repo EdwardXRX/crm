@@ -2,7 +2,9 @@ package com.edward.crm_ssh.workbench.service;
 
 import com.edward.crm_ssh.vo.PaginationVO;
 import com.edward.crm_ssh.workbench.domain.Clue;
+import com.edward.crm_ssh.workbench.domain.Tran;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,4 +27,12 @@ public interface  ClueService {
     Map<String, Object> getUserListAndClue(String id);
 
     Boolean update(Clue clue);
+
+    Clue detail(String id);
+
+    boolean unbund(String id);
+
+    boolean bundActivity(List<Map<String, String>> list);
+
+    boolean convert(String clueId, Tran t, String createBy);
 }
