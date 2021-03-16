@@ -2,6 +2,7 @@ package com.edward.crm_ssh.workbench.service.impl;
 
 
 import com.edward.crm_ssh.workbench.dao.CustomerDao;
+import com.edward.crm_ssh.workbench.domain.Contacts;
 import com.edward.crm_ssh.workbench.service.CustomerService;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +31,6 @@ public class CustomerServiceImpl implements CustomerService {
         List<String> list =  customerDao.getCustomerName(name);
         return list;
     }
+
+
 }

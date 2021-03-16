@@ -1,5 +1,7 @@
 package com.edward.crm_ssh.workbench.service;
 
+import com.edward.crm_ssh.workbench.domain.Contacts;
+
 import java.util.List;
 
 /**
@@ -13,4 +15,7 @@ import java.util.List;
  */
 public interface CustomerService {
     List<String> getCustomerName(String name);
+
+
+
 }

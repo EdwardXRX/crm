@@ -20,21 +20,25 @@
     <script type="text/javascript"
             src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css">
+    <script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
+    <script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
+
     <script type="text/javascript">
 
         $(function () {
 
-			//勾选了全选，则所有的选项都自动选中
-			$("#qx").click(function () {
+            //勾选了全选，则所有的选项都自动选中
+            $("#qx").click(function () {
 
-				$("input[name=xz]").prop("checked", this.checked);
+                $("input[name=xz]").prop("checked", this.checked);
 
-			});
+            });
 
 
-			$("#tranBody").on("click", $("input[name=xz]"), function () {
-				$("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
-			});
+            $("#tranBody").on("click", $("input[name=xz]"), function () {
+                $("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
+            });
 
 
             //局部刷新
@@ -57,11 +61,11 @@
                     "pageSize": pageSize,
                     "name": $.trim($("#search-name").val()),
                     "owner": $.trim($("#search-owner").val()),
-					"customerName":$.trim($("#search-customerName").val()),
-					"stage":$.trim($("#search-stage").val()),
-					"source":$.trim($("#search-clueSource").val()),
-					"type":$.trim($("#search-transactionType").val()),
-					"contactsName":$.trim($("#search-contactsName").val())
+                    "customerName": $.trim($("#search-customerName").val()),
+                    "stage": $.trim($("#search-stage").val()),
+                    "source": $.trim($("#search-clueSource").val()),
+                    "type": $.trim($("#search-transactionType").val()),
+                    "contactsName": $.trim($("#search-contactsName").val())
                 },
                 type: "get",
                 dataType: "json",
@@ -250,7 +254,7 @@
              style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
             <div class="btn-group" style="position: relative; top: 18%;">
                 <button type="button" class="btn btn-primary"
-                        onclick="window.location.href='workbench/transaction/add.do';"><span
+                        onclick="window.location.href='workbench/tran/add.do';"><span
                         class="glyphicon glyphicon-plus"></span> 创建
                 </button>
                 <button type="button" class="btn btn-default"
@@ -301,11 +305,11 @@
             </table>
         </div>
 
-		<div style="height: 50px; position: relative;top: 30px;">
-			<div id="tranPage">
+        <div style="height: 50px; position: relative;top: 30px;">
+            <div id="tranPage">
 
-			</div>
-		</div>
+            </div>
+        </div>
 
     </div>
 

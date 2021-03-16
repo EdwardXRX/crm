@@ -46,7 +46,6 @@
             %>
         };
 
-        alert(json);
 
         /*
             关于阶段和可能性
@@ -84,7 +83,7 @@
             $("#create-customerName").typeahead({
                 source: function (query, process) {
                     $.get(
-                        "workbench/transaction/getCustomerName.do",
+                        "workbench/tran/getCustomerName.do",
                         {"name": query},
                         function (data) {
                             process(data);
@@ -92,7 +91,7 @@
                         "json"
                     );
                 },
-                delay: 1500
+                delay: 500
             });
 
             $(".timeup").datetimepicker({
@@ -138,7 +137,6 @@
                 //var posibility = json.stage;
 
 
-
                 /*
 
                 我们现在以json.key形式不能取得value
@@ -162,6 +160,110 @@
 
             })
 
+            /*将活动展示到模态窗口的活动列表中*/
+            $("#searchActivityModal").click(function () {
+
+                $.ajax({
+                    url: "workbench/tran/getActivityList.do",
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+
+                        var html = "";
+
+                        //每一个n，就是每一个市场活动对象
+                        $.each(data, function (i, n) {
+                            html += '<tr>';
+                            html += '<td><input type="radio" name="xzA" value="' + n.id + ' | ' + n.name + '"/></td> ';
+                            html += '<td>' + n.name + '</td>';
+                            html += '<td>' + n.startDate + '</td>';
+                            html += '<td>' + n.endDate + '</td>';
+                            html += '<td>' + n.owner + '</td>';
+                            html += '</tr>';
+                        });
+
+                        $("#activity-list").html(html);
+
+                        $("#findMarketActivity").modal("show");
+                    }
+
+                })
+
+            })
+
+            /*将选中的活动名称填入活动名称输入框*/
+            $("#selectActivityBtn").click(function () {
+
+                var $xzA = $("input[name=xzA]:checked");
+
+                var str = "";
+                str = $($xzA[0]).val();
+
+                var aList = str.split("|");
+
+                /*字符串分割*/
+                var activityId = aList[0].trim();
+                var activityName = aList[1].trim();
+
+                $("#create-activitySrc").val(activityName);
+                $("#activityId").val(activityId);
+
+                $("#findMarketActivity").modal("hide");
+
+            });
+
+            /*将联系人展示到模态窗口的联系人列表中*/
+            $("#searchContactsModal").click(function () {
+
+                $.ajax({
+                    url: "workbench/tran/getContactsList.do",
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+
+                        var html = "";
+
+                        //每一个n，就是每一个市场活动对象
+                        $.each(data, function (i, n) {
+                            html += '<tr>';
+                            /*下面的val取值，用了：id|名字的格式。方便选中和保存操作*/
+                            html += '<td><input type="radio" name="xzC" value="' + n.id + ' | ' + n.fullname + '  "/></td> ';
+                            html += '<td>' + n.fullname + '</td>';
+                            html += '<td>' + n.email + '</td>';
+                            html += '<td>' + n.mphone + '</td>';
+                            html += '</tr>';
+                        });
+
+                        $("#contacts-list").html(html);
+
+                        $("#findContacts").modal("show");
+                    }
+
+                })
+
+            })
+
+            /*将选中的联系人名称填入联系人名称输入框*/
+            $("#selectContactsBtn").click(function () {
+
+                var $xzC = $("input[name=xzC]:checked");
+
+                var str = "";
+                str = $($xzC[0]).val();
+
+                var cList = str.split("|");
+
+                /*字符串分割*/
+                var contactsId = cList[0].trim();
+                var contactsName = cList[1].trim();
+
+                $("#create-contactsName").val(contactsName);
+                $("#contactsId").val(contactsId);
+
+
+                $("#findContacts").modal("hide");
+
+            })
 
 
         })
@@ -201,8 +303,8 @@
                         <td>所有者</td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="activity-list">
+                    <%--<tr>
                         <td><input type="radio" name="activity"/></td>
                         <td>发传单</td>
                         <td>2020-10-10</td>
@@ -215,9 +317,13 @@
                         <td>2020-10-10</td>
                         <td>2020-10-20</td>
                         <td>zhangsan</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="selectActivityBtn">确定</button>
             </div>
         </div>
     </div>
@@ -251,8 +357,8 @@
                         <td>手机</td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="contacts-list">
+                    <%--<tr>
                         <td><input type="radio" name="activity"/></td>
                         <td>李四</td>
                         <td>lisi@bjpowernode.com</td>
@@ -263,9 +369,13 @@
                         <td>李四</td>
                         <td>lisi@bjpowernode.com</td>
                         <td>12345678901</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="selectContactsBtn">确定</button>
             </div>
         </div>
     </div>
@@ -276,11 +386,12 @@
     <h3>创建交易</h3>
     <div style="position: relative; top: -40px; left: 70%;">
         <button type="button" id="saveBtn" class="btn btn-primary">保存</button>
-        <button type="button" class="btn btn-default">取消</button>
+        <button onClick="window.location.href='workbench/transaction/index.jsp'" type="button" id="cancelBtn" class="btn btn-default">取消</button>
     </div>
     <hr style="position: relative; top: -40px;">
 </div>
-<form action="workbench/transaction/save.do"  id="tranForm" method="post" class="form-horizontal" role="form" style="position: relative; top: -30px;">
+<form action="workbench/tran/save.do" id="tranForm" method="post" class="form-horizontal" role="form"
+      style="position: relative; top: -30px;">
     <div class="form-group">
         <label for="create-transactionOwner" class="col-sm-2 control-label">所有者<span
                 style="font-size: 15px; color: red;">*</span></label>
@@ -314,7 +425,8 @@
         <label for="create-accountName" class="col-sm-2 control-label">客户名称<span
                 style="font-size: 15px; color: red;">*</span></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-customerName" placeholder="支持自动补全，输入客户不存在则新建" name="customerName">
+            <input type="text" class="form-control" id="create-customerName" placeholder="支持自动补全，输入客户不存在则新建"
+                   name="customerName">
         </div>
         <label for="create-transactionStage" class="col-sm-2 control-label">阶段<span
                 style="font-size: 15px; color: red;">*</span></label>
@@ -354,24 +466,26 @@
                 </c:forEach>
             </select>
         </div>
-        <label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);"
-                                                                                           data-toggle="modal"
-                                                                                           data-target="#findMarketActivity"><span
-                class="glyphicon glyphicon-search"></span></a></label>
+        <label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;
+            <a href="javascript:void(0);"
+               data-toggle="modal"
+               data-target="#findMarketActivity"><span
+                    class="glyphicon glyphicon-search" id="searchActivityModal"></span></a></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-activitySrc" value="发传单1">
-            <input type="hidden" name="activityId" value="0db857a8afa0465ebf996465cb2c336b"/>
+            <input type="text" class="form-control" id="create-activitySrc" value="">
+            <input type="hidden" name="activityId" id="activityId" value=""/>
         </div>
     </div>
 
     <div class="form-group">
         <label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);"
                                                                                             data-toggle="modal"
-                                                                                            data-target="#findContacts"><span
+                                                                                            data-target="#findContacts"
+                                                                                            id="searchContactsModal"><span
                 class="glyphicon glyphicon-search"></span></a></label>
         <div class="col-sm-10" style="width: 300px;">
-            <input type="text" class="form-control" id="create-contactsName" value="马云">
-            <input type="hidden" name="contactsId" value="e7b6758e11bf47f98ccc9e33f81147d5">
+            <input type="text" class="form-control" id="create-contactsName" value="">
+            <input type="hidden" name="contactsId" id="contactsId" value="">
         </div>
     </div>
 

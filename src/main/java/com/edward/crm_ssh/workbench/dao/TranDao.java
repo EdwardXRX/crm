@@ -2,6 +2,7 @@ package com.edward.crm_ssh.workbench.dao;
 
 
 import com.edward.crm_ssh.workbench.domain.Tran;
+import com.edward.crm_ssh.workbench.domain.TranRemark;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,6 @@ public interface TranDao {
     int getTotalByCondition(Map<String, Object> map);
 
     List<Tran> getTranListByCondition(Map<String, Object> map);
+
+    int delete(String[] ids);
 }

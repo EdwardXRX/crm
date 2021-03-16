@@ -47,4 +47,7 @@ public interface ActivityService {
     List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map);
 
     List<Activity> getActivityListByName(String aname);
+
+    List<Activity> getActivityList();
+
 }

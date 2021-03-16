@@ -191,6 +191,18 @@
         where a.name like  CONCAT('%',#{aname},'%')
     </select>
 
+    <select id="getActivityList" resultType="Activity">
+        select
+        a.id,
+        a.name,
+        a.startDate,
+        a.endDate,
+        u.name as owner
+        from tbl_activity a
+        join tbl_user u
+        on a.owner = u.id
+    </select>
+
 
 
 </mapper>

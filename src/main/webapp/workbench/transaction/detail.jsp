@@ -68,6 +68,8 @@
         var cancelAndSaveBtnDefault = true;
 
         $(function () {
+
+
             $("#remark").focus(function () {
                 if (cancelAndSaveBtnDefault) {
                     //设置remarkDiv的高度为130px
@@ -126,11 +128,180 @@
 
             //页面加载完之后，就加载历史阶段
             showHistoryList();
+
+            /*展示评论列表*/
+            showRemarkList();
+
+            $("#remarkBody").on("mouseover", ".remarkDiv", function () {
+                $(this).children("div").children("div").show();
+            });
+
+            $("#remarkBody").on("mouseout", ".remarkDiv", function () {
+                $(this).children("div").children("div").hide();
+            });
+
+            /*保存评论按钮*/
+            $("#saveRemarkBtn").click(function () {
+                //唯一信息，就是备注里的信息
+                //还有外键
+
+                $.ajax({
+                    url: "workbench/tran/saveRemark.do",
+                    data: {
+                        "noteContent": $.trim($("#remark").val()),
+                        "tranId": "${t.id}"
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+
+                        /*
+                        <div class="remarkDiv" style="height: 60px;">
+                        <img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
+                            <div style="position: relative; top: -40px; left: 40px;">
+                            <h5>哎呦！</h5>
+                                <font color="gray">交易</font> <font color="gray">-</font> <b>动力节点-交易01</b> <small style="color: gray;">
+                                    2017-01-22 10:10:10 由zhangsan</small>
+                                         <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
+                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
+                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
+            </div>
+        </div>
+    </div>
+                        */
+
+                        /*data{success,activity}*/
+
+                        if (data.success) {
+                            $("#remark").val("");
+                            var html = "";
+                            html += '<div id="' + data.tr.id + '" class="remarkDiv" style="height: 60px;">';
+                            html += '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">';
+                            html += '<div style="position: relative; top: -40px; left: 40px;" >';
+                            html += '<h5>' + data.tr.noteContent + '</h5>';
+                            html += '<font color="gray">交易</font> <font color="gray">-</font> <b>${t.name}</b> <small style="color: gray;"> ' + data.tr.createTime + ' 由' + data.tr.createBy + '</small>';
+                            html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">';
+                            html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
+                            html += '&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html += '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\'' + data.tr.id + '\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
+                            html += '</div>';
+                            html += '</div>';
+                            html += '</div>';
+
+                            $("#remarkDiv").before(html);
+
+                        } else {
+                            alert("添加失败！")
+                        }
+                    }
+
+                })
+
+            })
+
+            /*更新评论按钮*/
+            $("#updateRemarkBtn").click(function () {
+                var id = $("#remarkId").val();
+
+                $.ajax({
+                    url: "workbench/tran/updateRemark.do",
+                    data: {
+                        "id": id,
+                        "noteContent": $.trim($("#noteContent").val())
+
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+
+                        if (data.success) {
+                            //修改备注成功
+                            //更新相关内容
+                            $("#e" + id).html(data.tr.noteContent);
+                            $("#s" + id).html(data.tr.editTime + "由" + data.tr.editBy);
+
+                            //关闭模态窗口
+                            $("#editRemarkModal").modal("hide");
+
+                        } else {
+                            alert("修改备注失败")
+                        }
+
+                    }
+
+                })
+
+            })
+
+            $("#deleteTranBtn").click(function () {
+
+                $.ajax({
+                    url: "workbench/tran/delete.do",
+                    data: {"id": "${t.id}"},
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+
+                            alert("删除成功");
+                            $(window).attr("location", "workbench/transaction/index.jsp");
+                        } else {
+                            //删除失败
+                            alert("删除失败")
+                        }
+                    }
+
+                })
+
+
+            })
         });
+
+        /*展示评论列表*/
+        function showRemarkList() {
+
+            $.ajax({
+                url: "workbench/tran/getRemarkListByAid.do",
+                data: {
+                    "tranId": "${t.id}"
+                },
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    var html = "";
+                    $.each(data, function (i, n) {
+
+                        <!--拼接。。。。。。。。。。。。。。。。-->
+                        html += '<div id="' + n.id + '" class="remarkDiv" style="height: 60px;">';
+                        html += '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">';
+                        html += '<div style="position: relative; top: -40px; left: 40px;" >';
+                        html += '<h5 id="e' + n.id + '">' + n.noteContent + '</h5>';
+                        html += '<font color="gray">交易</font> <font color="gray">-</font> <b>${a.name}</b> <small style="color: gray;" id="s' + n.id + '"> ' + (n.editFlag == 1 ? n.editTime : n.createTime) + ' 由' + (n.editFlag == 1 ? n.editBy : n.createBy) + '</small>';
+                        html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">';
+                        html += '<a class="myHref" href="javascript:void(0);" onclick="editRemark(\'' + n.id + '\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
+                        html += '&nbsp;&nbsp;&nbsp;&nbsp;';
+                        html += '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\'' + n.id + '\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+
+                    $("#remarkDiv").before(html);
+
+                }
+
+            })
+
+
+        }
+
 
         function showHistoryList() {
             $.ajax({
-                url: "workbench/transaction/getHistoryListByTranId.do",
+                url: "workbench/tran/getHistoryListByTranId.do",
                 data: {
                     "tranId": "${t.id}"
                 },
@@ -152,9 +323,7 @@
 
                     $("#tranHistoryBody").html(html);
 
-
                 }
-
             })
 
         }
@@ -168,7 +337,7 @@
             //先变更信息
 
             $.ajax({
-                url: "workbench/transaction/changeStage.do",
+                url: "workbench/tran/changeStage.do",
                 data: {
                     "id": "${t.id}",
                     "stage": stage,
@@ -186,15 +355,15 @@
                     if (data.success) {
                         //成功之后，需要局部刷新
                         //刷新阶段，可能性，修改人以及修改时间
-						$("#stage").html(data.t.stage);
-						$("#possibility").html(data.t.possibility);
-						$("#editBy").html(data.t.editBy);
-						$("#editTime").html(data.t.editTime);
+                        $("#stage").html(data.t.stage);
+                        $("#possibility").html(data.t.possibility);
+                        $("#editBy").html(data.t.editBy);
+                        $("#editTime").html(data.t.editTime);
 
-						//改变阶段之后
+                        //改变阶段之后
                         //蒋所有阶段图标重新判断，重新赋予样式及颜色
-                        changeIcon(stage,i);
-
+                        changeIcon(stage, i);
+                        showHistoryList();
 
                     } else {
                         alert("变更阶段失败")
@@ -203,11 +372,9 @@
 
             })
             alert(i);
-
-
         }
 
-        function changeIcon(stage,index1) {
+        function changeIcon(stage, index1) {
 
             //当前阶段
             var currentStage = stage;
@@ -225,97 +392,126 @@
 
             //如果当前阶段的可能性为0
             //前7个一定为黑圈，后两个一定是红叉，一个是黑叉
-            if(currentPossibility == "0")
-            {
+            if (currentPossibility == "0") {
                 //遍历前七个
-                for(var i = 0;i<point;i++)
-                {
+                for (var i = 0; i < point; i++) {
                     //黑圈------------------
                     //移除原来样式
-                    $("#" +i).removeClass();
-                    $("#"+ i).addClass("glyphicon glyphicon-record mystage");
+                    $("#" + i).removeClass();
+                    $("#" + i).addClass("glyphicon glyphicon-record mystage");
                     //为新样式赋予颜色
-                    $("#" +i).css("color","#000000");
+                    $("#" + i).css("color", "#000000");
                 }
 
                 //遍历后两个
-                for (var i = point;i<<%=dvList.size()%>;i++)
-                {
+                for (var i = point; i <<%=dvList.size()%>; i++) {
                     //如果是当前阶段
-                    if(i==index)
-                    {
+                    if (i == index) {
                         //红叉---------------------
                         //移除原来样式
-                        $("#" +i).removeClass();
-                        $("#"+ i).addClass("glyphicon glyphicon-remove mystage");
+                        $("#" + i).removeClass();
+                        $("#" + i).addClass("glyphicon glyphicon-remove mystage");
                         //为新样式赋予颜色
-                        $("#" +i).css("color","#FF0000");
-                    //如果不是当前阶段
-                    }else {
+                        $("#" + i).css("color", "#FF0000");
+                        //如果不是当前阶段
+                    } else {
                         //黑叉----------------------
                         //移除原来样式
-                        $("#" +i).removeClass();
-                        $("#"+ i).addClass("glyphicon glyphicon-remove mystage");
+                        $("#" + i).removeClass();
+                        $("#" + i).addClass("glyphicon glyphicon-remove mystage");
                         //为新样式赋予颜色
-                        $("#" +i).css("color","#000000");
+                        $("#" + i).css("color", "#000000");
 
 
                     }
                 }
             }
             //如果当前阶段的可能性不为0，前7个绿圈，绿色标记，黑圈，后两个一定是黑叉
-            else
-            {
+            else {
                 //遍历前七个
-                for(var i = 0;i<point;i++)
-                {
+                for (var i = 0; i < point; i++) {
                     //如果是当前阶段
-                    if(i == index)
-                    {
+                    if (i == index) {
                         //绿色标记---------------------
                         //移除原来样式
-                        $("#" +i).removeClass();
-                        $("#"+ i).addClass("glyphicon glyphicon-map-marker mystage");
+                        $("#" + i).removeClass();
+                        $("#" + i).addClass("glyphicon glyphicon-map-marker mystage");
                         //为新样式赋予颜色
-                        $("#" +i).css("color","#90F790");
+                        $("#" + i).css("color", "#90F790");
 
                     }
                     //如果是小于当前阶段
-                    else if(i<index)
-                    {
+                    else if (i < index) {
                         //绿圈---------------------
                         //移除原来样式
-                        $("#" +i).removeClass();
-                        $("#"+ i).addClass("glyphicon glyphicon-ok-circle mystage");
+                        $("#" + i).removeClass();
+                        $("#" + i).addClass("glyphicon glyphicon-ok-circle mystage");
                         //为新样式赋予颜色
-                        $("#" +i).css("color","#90F790");
+                        $("#" + i).css("color", "#90F790");
                     }
                     //如果大于当前阶段
-                    else
-                    {
+                    else {
                         //黑圈---------------------
                         //移除原来样式
-                        $("#" +i).removeClass();
-                        $("#"+ i).addClass("glyphicon glyphicon-record mystage");
+                        $("#" + i).removeClass();
+                        $("#" + i).addClass("glyphicon glyphicon-record mystage");
                         //为新样式赋予颜色
-                        $("#" +i).css("color","#000000");
+                        $("#" + i).css("color", "#000000");
 
                     }
                 }
 
                 //遍历后两个
-                for (var i = point;i<<%=dvList.size()%>;i++)
-                {
+                for (var i = point; i <<%=dvList.size()%>; i++) {
                     //黑叉---------------------
                     //移除原来样式
-                    $("#" +i).removeClass();
-                    $("#"+ i).addClass("glyphicon glyphicon-remove mystage");
+                    $("#" + i).removeClass();
+                    $("#" + i).addClass("glyphicon glyphicon-remove mystage");
                     //为新样式赋予颜色
-                    $("#" +i).css("color","#000000");
+                    $("#" + i).css("color", "#000000");
                 }
 
 
             }
+        }
+
+        //已完成
+        function editRemark(id) {
+
+            $("#remarkId").val(id);
+            var noteContent = $("#e" + id).html();
+
+            $("#noteContent").val(noteContent);
+
+            //
+            $("#editRemarkModal").modal("show");
+
+
+        }
+
+        //已完成
+        function deleteRemark(id) {
+            $.ajax({
+                url: "workbench/tran/deleteRemark.do",
+                data: {
+                    "id": id
+                },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+
+                    if (data.success) {
+
+                        //showRemarkList();
+                        $("#" + id).remove();
+                    } else {
+                        alert("删除失败");
+                    }
+
+
+                }
+
+            })
         }
 
 
@@ -323,6 +519,36 @@
 
 </head>
 <body>
+
+<!-- 修改交易备注的模态窗口 -->
+<div class="modal fade" id="editRemarkModal" role="dialog">
+    <%-- 备注的id --%>
+    <input type="hidden" id="remarkId">
+    <div class="modal-dialog" role="document" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">修改备注</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="edit-describe" class="col-sm-2 control-label">内容</label>
+                        <div class="col-sm-10" style="width: 81%;">
+                            <textarea class="form-control" rows="3" id="noteContent"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="updateRemarkBtn">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 返回按钮 -->
 <div style="position: relative; top: 35px; left: 10px;">
@@ -336,10 +562,13 @@
         <h3>${t.customerId}-${t.name} <small>￥${t.money}</small></h3>
     </div>
     <div style="position: relative; height: 50px; width: 250px;  top: -72px; left: 700px;">
-        <button type="button" class="btn btn-default" onclick="window.location.href='edit.html';"><span
+        <button type="button" class="btn btn-default"
+                onclick="window.location.href='workbench/transaction/edit.jsp';"><span
                 class="glyphicon glyphicon-edit"></span> 编辑
         </button>
-        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+        <button type="button" id="deleteTranBtn" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span>
+            删除
+        </button>
     </div>
 </div>
 
@@ -589,27 +818,13 @@
 </div>
 
 <!-- 备注 -->
-<div style="position: relative; top: 100px; left: 40px;">
+<div id="remarkBody" style="position: relative; top: 100px; left: 40px;">
     <div class="page-header">
         <h4>备注</h4>
     </div>
 
-    <!-- 备注1 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>哎呦！</h5>
-            <font color="gray">交易</font> <font color="gray">-</font> <b>动力节点-交易01</b> <small style="color: gray;">
-            2017-01-22 10:10:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
+    <%--<!-- 备注1 -->
+
 
     <!-- 备注2 -->
     <div class="remarkDiv" style="height: 60px;">
@@ -626,7 +841,7 @@
                                                                    style="font-size: 20px; color: #E6E6E6;"></span></a>
             </div>
         </div>
-    </div>
+    </div>--%>
 
     <div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
         <form role="form" style="position: relative;top: 10px; left: 10px;">
@@ -634,7 +849,7 @@
                       placeholder="添加备注..."></textarea>
             <p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
                 <button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" id="saveRemarkBtn">保存</button>
             </p>
         </form>
     </div>

@@ -9,7 +9,6 @@ import com.edward.crm_ssh.workbench.domain.Activity;
 import com.edward.crm_ssh.workbench.domain.ActivityRemark;
 import com.edward.crm_ssh.workbench.service.ActivityService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -29,6 +28,20 @@ import java.util.Map;
 @Service("ActivityServiceImpl")
 public class ActivityServiceImpl implements ActivityService {
 
+
+
+    @Resource
+    private ActivityDao activityDao;
+
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    private ActivityRemarkDao activityRemarkDao;
+
+
+
+
     @Override
     public List<Activity> getActivityListByName(String aname) {
 
@@ -38,16 +51,12 @@ public class ActivityServiceImpl implements ActivityService {
         return aList;
     }
 
-
     @Override
-    public boolean saveRemark(ActivityRemark ar) {
-        boolean flag = true;
+    public List<Activity> getActivityList() {
 
-        int count = remarkDao.saveRemark(ar);
-        if (count != 1)
-            flag = false;
+        List<Activity> aList = activityDao.getActivityList();
 
-        return flag;
+        return aList;
     }
 
     @Override
@@ -57,16 +66,6 @@ public class ActivityServiceImpl implements ActivityService {
 
         return a;
     }
-
-    @Resource
-    private ActivityDao activityDao;
-
-    @Resource
-    private UserDao userDao;
-
-    @Resource
-    private ActivityRemarkDao remarkDao;
-
 
     @Override
     public PaginationVO<Activity> pageList(Map<String, Object> map) {
@@ -140,14 +139,14 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityRemark> getRemarkListByAid(String activityId) {
 
-        List<ActivityRemark> arList = remarkDao.getRemarkListByAid(activityId);
+        List<ActivityRemark> arList = activityRemarkDao.getRemarkListByAid(activityId);
         return arList;
     }
 
     @Override
     public boolean deleteRemark(String id) {
 
-        int count = remarkDao.deleteRemark(id);
+        int count = activityRemarkDao.deleteRemark(id);
 
         boolean flag = true;
 
@@ -161,7 +160,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public boolean updateRemark(ActivityRemark ar) {
-        int count = remarkDao.updateRemark(ar);
+        int count = activityRemarkDao.updateRemark(ar);
         boolean flag = true;
         if (count != 1)
             flag = false;
@@ -173,10 +172,10 @@ public class ActivityServiceImpl implements ActivityService {
 
         boolean flag = true;
         //首先查询我们需要删除的备注数量
-        int count = remarkDao.getCountByAids(ids);
+        int count = activityRemarkDao.getCountByAids(ids);
 
         //然后再查询我们删除的备注条数
-        int count2 = remarkDao.deleteByAids(ids);
+        int count2 = activityRemarkDao.deleteByAids(ids);
         //两者进行比较，如果成功之后再删除我们的真正要删除的活动记录
 
         if (count != count2) {
@@ -211,4 +210,14 @@ public class ActivityServiceImpl implements ActivityService {
         return aList;
     }
 
+    @Override
+    public boolean saveRemark(ActivityRemark ar) {
+        boolean flag = true;
+
+        int count = activityRemarkDao.saveRemark(ar);
+        if (count != 1)
+            flag = false;
+
+        return flag;
+    }
 }
