@@ -56,7 +56,7 @@
                             $.each(data, function (i, n) {
                                 html += '<tr>';
                                 html += '<td><input type="radio" name="xz" value="' + n.id + '"/></td> ';
-                                html += '<td id="'+n.id+'">' + n.name + '</td>';
+                                html += '<td id="' + n.id + '">' + n.name + '</td>';
                                 html += '<td>' + n.startDate + '</td>';
                                 html += '<td>' + n.endDate + '</td>';
                                 html += '<td>' + n.owner + '</td>';
@@ -109,12 +109,12 @@
             $("#convertBtn").click(function () {
 
                 //根据是否选中”为客户创建交易”
-                if($("#isCreateTransaction").prop("checked"))
-                {
+                if ($("#isCreateTransaction").prop("checked")) {
                     //创建一张交易表
                     //多传递很多信息
                     //金额，交易名称，预计成交日期，阶段，市场活动id
-                    /*window.location.href="workbench/clue/convert.do?clueId=${param.id}";*/
+                    /*window.location.href="workbench/clue/convert.do?clueId=
+                    ${param.id}";*/
 
                     //因为东西太多，选择表单
                     //表单中填写name属性
@@ -123,12 +123,9 @@
                     $("#tranForm").submit();
 
 
-
-                }
-                else
-                {
+                } else {
                     //不需要创建
-                    window.location.href="workbench/clue/convert.do?clueId=${param.id}";
+                    window.location.href = "workbench/clue/convert.do?clueId=${param.id}";
                 }
 
             })
@@ -188,7 +185,9 @@
                     </tbody>
                 </table>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button onclick="javascript:window.history.go(-1)" type="button" class="btn btn-default"
+                            data-dismiss="modal">取消
+                    </button>
                     <button type="button" class="btn btn-primary" id="submitActivityBtn">提交</button>
                 </div>
             </div>
@@ -253,7 +252,7 @@
     <b>${param.owner}</b>
 </div>
 <div id="operation" style="position: relative; left: 40px; height: 35px; top: 100px;">
-    <input class="btn btn-primary" type="button"  id="convertBtn" value="转换">
+    <input class="btn btn-primary" type="button" id="convertBtn" value="转换">
     &nbsp;&nbsp;&nbsp;&nbsp;
     <input class="btn btn-default" type="button" value="取消">
 </div>

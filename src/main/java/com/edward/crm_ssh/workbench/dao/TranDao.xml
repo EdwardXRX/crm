@@ -214,6 +214,29 @@
         </foreach>
     </delete>
 
+    <select id="getTranList" resultType="Tran">
+        select
+        id,
+        name,
+        money,
+        stage,
+        expectedDate,
+        type
+        from
+        tbl_tran
+        order by createTime
+        desc
+    </select>
+
+    <select id="getTranIdsByCustomerId" resultType="String">
+            select
+            id
+            from
+            tbl_tran
+            where
+            customerId = #{customerId}
+    </select>
+
 
 </mapper>
 

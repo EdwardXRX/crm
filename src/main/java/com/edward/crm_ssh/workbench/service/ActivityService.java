@@ -50,4 +50,6 @@ public interface ActivityService {
 
     List<Activity> getActivityList();
 
+    Map<String, Object> getCharts();
+
 }

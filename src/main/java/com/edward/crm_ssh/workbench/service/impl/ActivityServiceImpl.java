@@ -220,4 +220,27 @@ public class ActivityServiceImpl implements ActivityService {
 
         return flag;
     }
+
+    @Override
+    public Map<String, Object> getCharts() {
+
+        Map<String, Object> map = new HashMap<>();
+
+        //取得total
+        int total = activityDao.getTotal();
+
+        System.out.println("total:" + total);
+
+        //取得dataList
+        List<Map<String, Object>> dataList = activityDao.getCharts();
+
+        if (dataList == null)
+            System.out.println("空2");
+
+        //将两个数据保存至map中
+        map.put("total", total);
+        map.put("dataList", dataList);
+
+        return map;
+    }
 }

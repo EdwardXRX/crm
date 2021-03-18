@@ -37,4 +37,7 @@ public interface ActivityDao {
 
     List<Activity> getActivityList();
 
+    int getTotal();
+
+    List<Map<String, Object>> getCharts();
 }

@@ -24,4 +24,8 @@ public interface TranDao {
     List<Tran> getTranListByCondition(Map<String, Object> map);
 
     int delete(String[] ids);
+
+    List<Tran> getTranList();
+
+    String[] getTranIdsByCustomerId(String customerId);
 }

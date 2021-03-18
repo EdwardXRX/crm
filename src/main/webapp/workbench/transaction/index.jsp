@@ -40,11 +40,9 @@
                 $("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
             });
 
-
             //局部刷新
             //默认展开页表的第一页，每一页两条记录
             pageList(1, 5);
-
 
         });
 

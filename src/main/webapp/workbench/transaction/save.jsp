@@ -38,7 +38,6 @@
                  for (String key:set)
                      {
                          String value = pMap.get(key);
-
             %>
             "<%=key%>": <%=value%>,
             <%

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.edward.crm_ssh.workbench.dao.CustomerDao">
 
@@ -45,7 +45,7 @@
         )
     </insert>
 
-	<select id="getCustomerName" resultType="String">
+    <select id="getCustomerName" resultType="String">
 		select
 		name
 		from
@@ -55,7 +55,93 @@
 		like
 		CONCAT('%',#{name},'%')
 	</select>
-  	
+
+    <select id="getTotalByCondition" resultType="int">
+        select count(*)
+        from tbl_customer cus
+        join tbl_user u
+        on cus.owner = u.id
+
+        <where>
+            <if test="name!= null and name != ''">
+                cus.name like '%' #{name} '%'
+            </if>
+
+            <if test="owner != null and owner != ''">
+                and u.name like '%' #{owner}'%'
+            </if>
+
+            <if test="phone != null and phone!= ''">
+                and cus.phone like '%' #{phone}'%'
+            </if>
+
+            <if test="website != null and website!= ''">
+                and cus.website like '%' #{website}'%'
+            </if>
+
+        </where>
+
+
+    </select>
+
+    <select id="getCustomerListByCondition" resultType="Customer">
+        select
+        cus.id,
+        cus.name,
+        u.name as owner,
+        cus.phone,
+        cus.website
+        from tbl_customer cus
+        join tbl_user u
+        on cus.owner = u.id
+        <where>
+            <if test="name!= null and name != ''">
+                cus.name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="owner != null and owner != ''">
+                and u.name like CONCAT('%',#{owner},'%')
+            </if>
+            <if test="phone != null and phone!= ''">
+                cus.phone like CONCAT('%',#{phone},'%')
+            </if>
+            <if test="website != null and website!= ''">
+                cus.website like CONCAT('%',#{website},'%')
+            </if>
+        </where>
+        order by cus.createTime desc
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <select id="detail" resultType="Customer">
+            select
+            cus.id,
+            u.name as owner,
+            cus.name,
+            cus.website,
+            cus.phone,
+            cus.contactSummary,
+            cus.description,
+            cus.nextContactTime,
+            cus.address,
+            cus.createTime,
+            cus.createBy,
+            cus.editTime,
+            cus.editBy
+            from
+            tbl_customer cus
+            join tbl_user u
+            on cus.owner =  u.id
+            where cus.id = #{id}
+    </select>
+
+    <delete id="delete">
+        delete
+        from tbl_customer
+        where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
 
 

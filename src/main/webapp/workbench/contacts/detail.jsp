@@ -1,14 +1,14 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
 	<base href="<%=basePath%>">
-	<meta charset="UTF-8">
+<meta charset="UTF-8">
 
 <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
@@ -60,75 +60,110 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 
-	<!-- 删除联系人的模态窗口 -->
-	<div class="modal fade" id="removeContactsModal" role="dialog">
+	<!-- 解除联系人和市场活动关联的模态窗口 -->
+	<div class="modal fade" id="unbundActivityModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 30%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title">删除联系人</h4>
+					<h4 class="modal-title">解除关联</h4>
 				</div>
 				<div class="modal-body">
-					<p>您确定要删除该联系人吗？</p>
+					<p>您确定要解除该关联关系吗？</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">解除</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-    <!-- 删除交易的模态窗口 -->
-    <div class="modal fade" id="removeTransactionModal" role="dialog">
-        <div class="modal-dialog" role="document" style="width: 30%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title">删除交易</h4>
-                </div>
-                <div class="modal-body">
-                    <p>您确定要删除该交易吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
-                </div>
-            </div>
-        </div>
-    </div>
 	
-	<!-- 创建联系人的模态窗口 -->
-	<div class="modal fade" id="createContactsModal" role="dialog">
+	<!-- 联系人和市场活动关联的模态窗口 -->
+	<div class="modal fade" id="bundActivityModal" role="dialog">
+		<div class="modal-dialog" role="document" style="width: 80%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title">关联市场活动</h4>
+				</div>
+				<div class="modal-body">
+					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
+						<form class="form-inline" role="form">
+						  <div class="form-group has-feedback">
+						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
+						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+						  </div>
+						</form>
+					</div>
+					<table id="activityTable2" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
+						<thead>
+							<tr style="color: #B3B3B3;">
+								<td><input type="checkbox"/></td>
+								<td>名称</td>
+								<td>开始日期</td>
+								<td>结束日期</td>
+								<td>所有者</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="checkbox"/></td>
+								<td>发传单</td>
+								<td>2020-10-10</td>
+								<td>2020-10-20</td>
+								<td>zhangsan</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"/></td>
+								<td>发传单</td>
+								<td>2020-10-10</td>
+								<td>2020-10-20</td>
+								<td>zhangsan</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 修改联系人的模态窗口 -->
+	<div class="modal fade" id="editContactsModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" onclick="$('#createContactsModal').modal('hide');">
+					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel1">创建联系人</h4>
+					<h4 class="modal-title" id="myModalLabel">修改联系人</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="create-contactsOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-contactsOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-contactsOwner">
-								  <option>zhangsan</option>
+								<select class="form-control" id="edit-contactsOwner">
+								  <option selected>zhangsan</option>
 								  <option>lisi</option>
 								  <option>wangwu</option>
 								</select>
 							</div>
-							<label for="create-clueSource" class="col-sm-2 control-label">来源</label>
+							<label for="edit-clueSource" class="col-sm-2 control-label">来源</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-clueSource">
+								<select class="form-control" id="edit-clueSource">
 								  <option></option>
-								  <option>广告</option>
+								  <option selected>广告</option>
 								  <option>推销电话</option>
 								  <option>员工介绍</option>
 								  <option>外部介绍</option>
@@ -147,78 +182,77 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 						</div>
 						
 						<div class="form-group">
-							<label for="create-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-surname">
+								<input type="text" class="form-control" id="edit-surname" value="李四">
 							</div>
-							<label for="create-call" class="col-sm-2 control-label">称呼</label>
+							<label for="edit-call" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-call">
+								<select class="form-control" id="edit-call">
 								  <option></option>
-								  <option>先生</option>
+								  <option selected>先生</option>
 								  <option>夫人</option>
 								  <option>女士</option>
 								  <option>博士</option>
 								  <option>教授</option>
 								</select>
 							</div>
-							
 						</div>
 						
 						<div class="form-group">
-							<label for="create-job" class="col-sm-2 control-label">职位</label>
+							<label for="edit-job" class="col-sm-2 control-label">职位</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-job">
+								<input type="text" class="form-control" id="edit-job" value="CTO">
 							</div>
-							<label for="create-mphone" class="col-sm-2 control-label">手机</label>
+							<label for="edit-mphone" class="col-sm-2 control-label">手机</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-mphone">
-							</div>
-						</div>
-						
-						<div class="form-group" style="position: relative;">
-							<label for="create-email" class="col-sm-2 control-label">邮箱</label>
-							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-email">
-							</div>
-							<label for="create-birth" class="col-sm-2 control-label">生日</label>
-							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-birth">
+								<input type="text" class="form-control" id="edit-mphone" value="12345678901">
 							</div>
 						</div>
 						
-						<div class="form-group" style="position: relative;">
-							<label for="create-customerName" class="col-sm-2 control-label">客户名称</label>
+						<div class="form-group">
+							<label for="edit-email" class="col-sm-2 control-label">邮箱</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-customerName" placeholder="支持自动补全，输入客户不存在则新建">
+								<input type="text" class="form-control" id="edit-email" value="lisi@bjpowernode.com">
+							</div>
+							<label for="edit-birth" class="col-sm-2 control-label">生日</label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="edit-birth">
 							</div>
 						</div>
 						
-						<div class="form-group" style="position: relative;">
-							<label for="create-describe" class="col-sm-2 control-label">描述</label>
+						<div class="form-group">
+							<label for="edit-customerName" class="col-sm-2 control-label">客户名称</label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="edit-customerName" placeholder="支持自动补全，输入客户不存在则新建" value="动力节点">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="edit-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="edit-describe">这是一条线索的描述信息</textarea>
 							</div>
 						</div>
 						
 						<div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative;"></div>
-
-                        <div style="position: relative;top: 15px;">
-                            <div class="form-group">
-                                <label for="edit-contactSummary" class="col-sm-2 control-label">联系纪要</label>
-                                <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="3" id="edit-contactSummary">这个线索即将被转换</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
-                                <div class="col-sm-10" style="width: 300px;">
-                                    <input type="text" class="form-control" id="edit-nextContactTime" value="2017-05-01">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative; top : 10px;"></div>
+						
+						<div style="position: relative;top: 15px;">
+							<div class="form-group">
+								<label for="create-contactSummary" class="col-sm-2 control-label">联系纪要</label>
+								<div class="col-sm-10" style="width: 81%;">
+									<textarea class="form-control" rows="3" id="create-contactSummary"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
+								<div class="col-sm-10" style="width: 300px;">
+									<input type="text" class="form-control" id="create-nextContactTime">
+								</div>
+							</div>
+						</div>
+						
+						<div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative; top : 10px;"></div>
 
                         <div style="position: relative;top: 20px;">
                             <div class="form-group">
@@ -233,95 +267,11 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- 修改客户的模态窗口 -->
-    <div class="modal fade" id="editCustomerModal" role="dialog">
-        <div class="modal-dialog" role="document" style="width: 85%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">修改客户</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <label for="edit-customerOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
-                            <div class="col-sm-10" style="width: 300px;">
-                                <select class="form-control" id="edit-customerOwner">
-                                    <option>zhangsan</option>
-                                    <option>lisi</option>
-                                    <option>wangwu</option>
-                                </select>
-                            </div>
-                            <label for="edit-customerName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
-                            <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-customerName" value="动力节点">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-website" class="col-sm-2 control-label">公司网站</label>
-                            <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-website" value="http://www.bjpowernode.com">
-                            </div>
-                            <label for="edit-phone" class="col-sm-2 control-label">公司座机</label>
-                            <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-phone" value="010-84846003">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-describe" class="col-sm-2 control-label">描述</label>
-                            <div class="col-sm-10" style="width: 81%;">
-                                <textarea class="form-control" rows="3" id="edit-describe"></textarea>
-                            </div>
-                        </div>
-
-                        <div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative;"></div>
-
-                        <div style="position: relative;top: 15px;">
-                            <div class="form-group">
-                                <label for="create-contactSummary1" class="col-sm-2 control-label">联系纪要</label>
-                                <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="3" id="create-contactSummary1"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="create-nextContactTime2" class="col-sm-2 control-label">下次联系时间</label>
-                                <div class="col-sm-10" style="width: 300px;">
-                                    <input type="text" class="form-control" id="create-nextContactTime2">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative; top : 10px;"></div>
-
-                        <div style="position: relative;top: 20px;">
-                            <div class="form-group">
-                                <label for="edit-address" class="col-sm-2 control-label">详细地址</label>
-                                <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="1" id="edit-address">北京大兴大族企业湾</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 	<!-- 返回按钮 -->
 	<div style="position: relative; top: 35px; left: 10px;">
@@ -331,10 +281,10 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 	<!-- 大标题 -->
 	<div style="position: relative; left: 40px; top: -30px;">
 		<div class="page-header">
-			<h3>动力节点 <small><a href="http://www.bjpowernode.com" target="_blank">http://www.bjpowernode.com</a></small></h3>
+			<h3>李四先生 <small> - 动力节点</small></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCustomerModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editContactsModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
 			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 		</div>
 	</div>
@@ -344,65 +294,80 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		<div style="position: relative; left: 40px; height: 30px;">
 			<div style="width: 300px; color: gray;">所有者</div>
 			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>zhangsan</b></div>
-			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">名称</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>动力节点</b></div>
+			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">来源</div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>广告</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 10px;">
-			<div style="width: 300px; color: gray;">公司网站</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>http://www.bjpowernode.com</b></div>
-			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">公司座机</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>010-84846003</b></div>
+			<div style="width: 300px; color: gray;">客户名称</div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>动力节点</b></div>
+			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">姓名</div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>李四先生</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 20px;">
+			<div style="width: 300px; color: gray;">邮箱</div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>lisi@bjpowernode.com</b></div>
+			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">手机</div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>12345678901</b></div>
+			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+		</div>
+		<div style="position: relative; left: 40px; height: 30px; top: 30px;">
+			<div style="width: 300px; color: gray;">职位</div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>CTO</b></div>
+			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">生日</div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>&nbsp;</b></div>
+			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
+			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
+		</div>
+		<div style="position: relative; left: 40px; height: 30px; top: 40px;">
 			<div style="width: 300px; color: gray;">创建者</div>
 			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">2017-01-18 10:10:10</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
-		<div style="position: relative; left: 40px; height: 30px; top: 30px;">
+		<div style="position: relative; left: 40px; height: 30px; top: 50px;">
 			<div style="width: 300px; color: gray;">修改者</div>
 			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">2017-01-19 10:10:10</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
-        <div style="position: relative; left: 40px; height: 30px; top: 40px;">
-            <div style="width: 300px; color: gray;">联系纪要</div>
-            <div style="width: 630px;position: relative; left: 200px; top: -20px;">
-                <b>
-                    这条线索即将被转换
-                </b>
-            </div>
-            <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
-        </div>
-        <div style="position: relative; left: 40px; height: 30px; top: 50px;">
-            <div style="width: 300px; color: gray;">下次联系时间</div>
-            <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>2017-05-01</b></div>
-            <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px; "></div>
-        </div>
 		<div style="position: relative; left: 40px; height: 30px; top: 60px;">
 			<div style="width: 300px; color: gray;">描述</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					这是一条线索的描述信息
+					这是一条线索的描述信息 （线索转换之后会将线索的描述转换到联系人的描述中）
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
-        <div style="position: relative; left: 40px; height: 30px; top: 70px;">
+		<div style="position: relative; left: 40px; height: 30px; top: 70px;">
+			<div style="width: 300px; color: gray;">联系纪要</div>
+			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
+				<b>
+					&nbsp;
+				</b>
+			</div>
+			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
+		</div>
+		<div style="position: relative; left: 40px; height: 30px; top: 80px;">
+			<div style="width: 300px; color: gray;">下次联系时间</div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>&nbsp;</b></div>
+			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px;"></div>
+		</div>
+        <div style="position: relative; left: 40px; height: 30px; top: 90px;">
             <div style="width: 300px; color: gray;">详细地址</div>
             <div style="width: 630px;position: relative; left: 200px; top: -20px;">
                 <b>
-                    北京大兴大族企业湾
+                    大族企业湾
                 </b>
             </div>
             <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
         </div>
 	</div>
-	
 	<!-- 备注 -->
-	<div style="position: relative; top: 10px; left: 40px;">
+	<div style="position: relative; top: 20px; left: 40px;">
 		<div class="page-header">
 			<h4>备注</h4>
 		</div>
@@ -453,7 +418,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				<h4>交易</h4>
 			</div>
 			<div style="position: relative;top: 0px;">
-				<table id="activityTable2" class="table table-hover" style="width: 900px;">
+				<table id="activityTable3" class="table table-hover" style="width: 900px;">
 					<thead>
 						<tr style="color: #B3B3B3;">
 							<td>名称</td>
@@ -473,7 +438,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 							<td>90</td>
 							<td>2017-02-07</td>
 							<td>新业务</td>
-							<td><a href="javascript:void(0);" data-toggle="modal" data-target="#removeTransactionModal" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>删除</a></td>
+							<td><a href="javascript:void(0);" data-toggle="modal" data-target="#unbundModal" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>删除</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -485,38 +450,41 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		</div>
 	</div>
 	
-	<!-- 联系人 -->
+	<!-- 市场活动 -->
 	<div>
-		<div style="position: relative; top: 20px; left: 40px;">
+		<div style="position: relative; top: 60px; left: 40px;">
 			<div class="page-header">
-				<h4>联系人</h4>
+				<h4>市场活动</h4>
 			</div>
 			<div style="position: relative;top: 0px;">
 				<table id="activityTable" class="table table-hover" style="width: 900px;">
 					<thead>
 						<tr style="color: #B3B3B3;">
 							<td>名称</td>
-							<td>邮箱</td>
-							<td>手机</td>
+							<td>开始日期</td>
+							<td>结束日期</td>
+							<td>所有者</td>
 							<td></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td><a href="contacts/detail.html" style="text-decoration: none;">李四</a></td>
-							<td>lisi@bjpowernode.com</td>
-							<td>13543645364</td>
-							<td><a href="javascript:void(0);" data-toggle="modal" data-target="#removeContactsModal" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>删除</a></td>
+							<td><a href="activity/detail.jsp" style="text-decoration: none;">发传单</a></td>
+							<td>2020-10-10</td>
+							<td>2020-10-20</td>
+							<td>zhangsan</td>
+							<td><a href="javascript:void(0);" data-toggle="modal" data-target="#unbundActivityModal" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			
 			<div>
-				<a href="javascript:void(0);" data-toggle="modal" data-target="#createContactsModal" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>新建联系人</a>
+				<a href="javascript:void(0);" data-toggle="modal" data-target="#bundActivityModal" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
 			</div>
 		</div>
 	</div>
+	
 	
 	<div style="height: 200px;"></div>
 </body>

@@ -203,6 +203,24 @@
         on a.owner = u.id
     </select>
 
+    <select id="getTotal" resultType="int">
+		select
+		count(*)
+		from
+		tbl_activity
+	</select>
+
+    <select id="getCharts" resultType="map">
+		select
+		count(*) as value,
+
+        owner as name
+
+        from tbl_activity
+
+        group by owner
+	</select>
+
 
 
 </mapper>

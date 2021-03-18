@@ -40,7 +40,6 @@
 
             $("#addBtn").click(function () {
 
-
                     $.ajax({
                         url: "workbench/activity/getUserList.do",
                         type: "get",
@@ -229,17 +228,6 @@
                 $("input[name=xz]").prop("checked", this.checked);
 
             });
-
-
-            //动态生成得元素，不能以普通绑定事件进行操作得
-            /*
-
-                动态生成得元素，要不停找到外层正常的元素去进行绑定
-
-                    下面这种方式才是有效的
-                    固定语法：
-                        $(需要绑定的外层元素).on("绑定事件的方式",需要绑定的jquery元素,回调函数);
-            */
 
 
             $("#activityBody").on("click", $("input[name=xz]"), function () {

@@ -12,6 +12,7 @@ import com.edward.crm_ssh.workbench.service.TranService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -151,7 +152,7 @@ public class TranServiceImpl implements TranService {
 
         int count1 = tranDao.changeStage(t);
 
-        if (count1!=1)
+        if (count1 != 1)
             flag = false;
 
         //阶段改变之后，我们需要生成一条交易历史
@@ -168,7 +169,7 @@ public class TranServiceImpl implements TranService {
         //添加一条交易历史
         int count2 = tranHistoryDao.save(th);
 
-        System.out.println("count2: =====" +count2);
+        System.out.println("count2: =====" + count2);
         if (count2 != 1)
             flag = false;
         return flag;
@@ -256,7 +257,6 @@ public class TranServiceImpl implements TranService {
         }
 
 
-
         int count3 = tranDao.delete(ids);
 
         if (count3 != ids.length) {
@@ -266,4 +266,47 @@ public class TranServiceImpl implements TranService {
         //返回一个标志位
         return flag;
     }
+
+    @Override
+    public Map<String, Object> getCharts() {
+
+        Map<String, Object> map = new HashMap<>();
+
+        //取得total
+        int total = tranDao.getTotal();
+
+        System.out.println("total:" + total);
+
+        //取得dataList
+        List<Map<String, Object>> dataList = tranDao.getCharts();
+
+        if (dataList == null)
+            System.out.println("空2");
+
+        //将两个数据保存至map中
+        map.put("total", total);
+        map.put("dataList", dataList);
+
+        return map;
+    }
+
+    @Override
+    public List<Tran> getTranList() {
+
+        List<Tran> tranList = tranDao.getTranList();
+
+        return tranList;
+    }
+
+    @Override
+    public String[] getTranIdsByCustomerId(String customerId) {
+        System.out.println("进入到通过客户id来删除交易的方法中");
+
+        String[] tranIds = tranDao.getTranIdsByCustomerId(customerId);
+
+        //返回一个标志位
+        return tranIds;
+    }
+
+
 }

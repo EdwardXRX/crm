@@ -104,11 +104,6 @@ public class ActivityController {
         map.put("pageSize", pageSize1);
 
 
-        if (as == null) {
-            System.out.println("空");
-        } else {
-            System.out.println("不空");
-        }
 
         PaginationVO<Activity> pageList = as.pageList(map);
 
@@ -129,18 +124,12 @@ public class ActivityController {
         //从session中获得当前登录用户的名字
         String createBy = ((User) httpSession.getAttribute("user")).getName();
 
-        Activity a = new Activity();
-        a.setId(id);
-        a.setOwner(activity.getOwner());
-        a.setName(activity.getName());
-        a.setStartDate(activity.getStartDate());
-        a.setEndDate(activity.getEndDate());
-        a.setCost(activity.getCost());
-        a.setDescription(activity.getDescription());
-        a.setCreateTime(createTime);
-        a.setCreateBy(createBy);
+        activity.setId(id);
 
-        boolean flag = as.save(a);
+        activity.setCreateTime(createTime);
+        activity.setCreateBy(createBy);
+
+        boolean flag = as.save(activity);
 
         PrintJson.printJsonFlag(response, flag);
     }

@@ -391,4 +391,25 @@ public class TranController {
 
 
     }
+
+    @RequestMapping(value = "/getCharts.do", method = RequestMethod.GET)
+    private void getCharts(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("获取交易统计图表的数据");
+
+
+        /*
+            业务层需要返回：
+                    total
+                    dataList
+
+                    通过map打包以上两项进行返回
+        */
+
+        Map<String,Object> map = ts.getCharts();
+
+        PrintJson.printJsonObj(response,map);
+
+
+
+    }
 }

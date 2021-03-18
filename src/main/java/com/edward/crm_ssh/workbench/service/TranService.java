@@ -38,4 +38,10 @@ public interface TranService {
     List<TranRemark> getRemarkListByAid(String tranId);
 
     boolean delete(String[] ids);
+
+    Map<String, Object> getCharts();
+
+    List<Tran> getTranList();
+
+    String[] getTranIdsByCustomerId(String customerId);
 }

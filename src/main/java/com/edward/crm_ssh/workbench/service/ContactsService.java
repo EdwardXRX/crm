@@ -1,8 +1,11 @@
 package com.edward.crm_ssh.workbench.service;
 
+import com.edward.crm_ssh.vo.PaginationVO;
+import com.edward.crm_ssh.workbench.domain.Activity;
 import com.edward.crm_ssh.workbench.domain.Contacts;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: crm
@@ -16,4 +19,6 @@ import java.util.List;
 public interface ContactsService {
 
     List<Contacts> getContactsList();
+
+    PaginationVO<Contacts> pageList(Map<String, Object> map);
 }
