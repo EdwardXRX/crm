@@ -8,12 +8,25 @@
     session111.invalidate();
 %>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <base href="<%=basePath%>">
-    <meta charset="UTF-8">
-    <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <meta charset="utf-8"/>
+    <title>登录界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Themesbrand" name="author"/>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/metismenu.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <%--   <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>--%>
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 
@@ -60,12 +73,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (data) {
-                    /*
-                    data : {
-                    "success" : true/false,
-                    "msg" : 哪儿错了
-                    }
-                     */
+
 
                     if (data.success) {
                         window.location.href = "workbench/index.jsp";
@@ -79,39 +87,108 @@
         }
 
     </script>
+
 </head>
-<body>
-<div style="position: absolute; top: 0px; left: 0px; width: 60%;">
-    <img src="image/2.jpg" style="width: 100%; height: 90%; position: relative; top: 50px;">
-</div>
-<div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
-    <div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">
-        CRM &nbsp;<span style="font-size: 12px;">&copy;2021 CRM_SSH</span></div>
-</div>
 
-<div style="position: absolute; top: 120px; right: 100px;width:450px;height:400px;border:1px solid #D5D5D5">
-    <div style="position: absolute; top: 0px; right: 60px;">
-        <div class="page-header">
-            <h1>登录</h1>
-        </div>
-        <form action="workbench/index.jsp" class="form-horizontal" role="form">
-            <div class="form-group form-group-lg">
-                <div style="width: 350px;">
-                    <input class="form-control" type="text" placeholder="用户名" id="loginAct">
-                </div>
-                <div style="width: 350px; position: relative;top: 20px;">
-                    <input class="form-control" type="password" placeholder="密码" id="loginPwd">
-                </div>
-                <div class="checkbox" style="position: relative;top: 30px; left: 10px;">
+<body class="bg-white">
 
-                    <span id="msg" style="color: red"></span>
+<!-- Log In page -->
+<div class="row">
+    <div class="col-lg-3 pr-0">
+        <div class="card mb-0 shadow-none">
+            <div class="card-body">
+
+                <h3 class="text-center m-0">
+                    <a href="index.html" class="logo logo-admin"><img src="assets/images/logo-sm.png"
+                                                                                height="60" alt="logo" class="my-3"></a>
+                </h3>
+
+                <div class="px-3">
+                    <h4 class="text-muted font-18 mb-2 text-center">Welcome Back !</h4>
+                    <p class="text-muted text-center">Sign in to continue to Amezia.</p>
+
+                    <form class="form-horizontal my-4" action="workbench/index.html">
+
+                        <!--用户名div-->
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="far fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="loginAct" placeholder="Enter username">
+                            </div>
+                        </div>
+
+                        <!--密码div-->
+                        <div class="form-group">
+                            <label for="userpassword">密码</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-key"></i></span>
+                                </div>
+                                <input type="password" class="form-control" id="loginPwd"
+                                       placeholder="Enter password">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-4">
+                            <div class="col-sm-6">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                    <label class="custom-control-label" for="customControlInline">下次自动登录</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <a href="pages-recoverpw-2.html" class="text-muted font-13"><i class="mdi mdi-lock"></i>
+                                    忘记密码</a>
+                            </div>
+                        </div>
+
+                        <!--提示错误信息-->
+                        <span id="msg" style="color: red">123</span>
+
+
+                        <div class="form-group mb-0 row">
+                            <div class="col-12 mt-2">
+                                <button class="btn btn-primary btn-block waves-effect waves-light" type="button"
+                                        id="submitBtn">登录
+                                    <i class="fas fa-sign-in-alt ml-1"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <button type="button" id="submitBtn" class="btn btn-primary btn-lg btn-block"
-                        style="width: 350px; position: relative;top: 45px;">登录
-                </button>
+
+
+                <div class="mt-4 text-center">
+                    <p class="mb-0">© 2021 ED</p>
+                </div>
             </div>
-        </form>
+        </div>
+    </div>
+    <div class="col-lg-9 p-0 h-100vh d-flex justify-content-center">
+        <div class="accountbg d-flex align-items-center">
+            <div class="account-title text-center text-white">
+                <h4 class="mt-3">Welcome To <span class="text-warning"> CRM</span></h4>
+                <h1 class="">Let's Get Started</h1>
+                <p class="font-14 mt-3">designed by ED</p>
+                <div class="border w-25 mx-auto border-warning"></div>
+            </div>
+        </div>
     </div>
 </div>
+<!-- End Log In page -->
+
+<!-- jQuery  -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/metisMenu.min.js"></script>
+<script src="assets/js/waves.min.js"></script>
+<script src="assets/js/jquery.slimscroll.min.js"></script>
+
+<!-- App js -->
+<script src="assets/js/app.js"></script>
+
 </body>
 </html>
