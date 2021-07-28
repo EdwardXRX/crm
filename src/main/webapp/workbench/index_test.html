@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Amezia - Responsive Bootstrap 4 Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta content="Themesbrand" name="author"/>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
+
+    <!--Morris Chart CSS -->
+    <link rel="stylesheet" href="../assets/plugins/morris/morris.css">
+    <link href="../assets/plugins/metro/MetroJs.min.css" rel="stylesheet">
+
+    <!-- App css -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/metismenu.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/style.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+
+<!-- Top Bar Start -->
+<div class="topbar">
+
+    <!-- LOGO -->
+    <div class="topbar-left">
+        <a href="index.html" class="logo">
+                    <span>
+                        <img src="../assets/images/logo-sm.png" alt="logo-small" class="logo-sm">
+                    </span>
+            <span>
+                        <img src="../assets/images/logo.png" alt="logo-large" class="logo-lg">
+                    </span>
+        </a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar-custom">
+
+        <!-- Search input -->
+        <div class="search-wrap" id="search-wrap">
+            <div class="search-bar">
+                <input class="search-input" type="search" placeholder="Search here.."/>
+                <a href="javascript:void(0);" class="close-search search-btn" data-target="#search-wrap">
+                    <i class="mdi mdi-close-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <ul class="list-unstyled topbar-nav float-right mb-0">
+            <li>
+                <a class="nav-link waves-effect waves-light search-btn" href="javascript:void(0);"
+                   data-target="#search-wrap">
+                    <i class="mdi mdi-magnify nav-icon"></i>
+                </a>
+            </li>
+
+            <li class="hidden-sm">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown"
+                   href="javascript: void(0);" role="button"
+                   aria-haspopup="false" aria-expanded="false">
+                    English <img src="../assets/images/flags/us_flag.jpg" class="ml-2" height="16" alt=""/> <i
+                        class="mdi mdi-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="javascript: void(0);"><span> German </span><img
+                            src="../assets/images/flags/germany_flag.jpg" alt="" class="ml-2 float-right" height="14"/></a>
+                    <a class="dropdown-item" href="javascript: void(0);"><span> Italian </span><img
+                            src="../assets/images/flags/italy_flag.jpg" alt="" class="ml-2 float-right"
+                            height="14"/></a>
+                    <a class="dropdown-item" href="javascript: void(0);"><span> French </span><img
+                            src="../assets/images/flags/french_flag.jpg" alt="" class="ml-2 float-right"
+                            height="14"/></a>
+                    <a class="dropdown-item" href="javascript: void(0);"><span> Spanish </span><img
+                            src="../assets/images/flags/spain_flag.jpg" alt="" class="ml-2 float-right"
+                            height="14"/></a>
+                    <a class="dropdown-item" href="javascript: void(0);"><span> Russian </span><img
+                            src="../assets/images/flags/russia_flag.jpg" alt="" class="ml-2 float-right"
+                            height="14"/></a>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#"
+                   role="button"
+                   aria-haspopup="false" aria-expanded="false">
+                    <i class="mdi mdi-bell-outline nav-icon"></i>
+                    <span class="badge badge-danger badge-pill noti-icon-badge">2</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+                    <!-- item-->
+                    <h6 class="dropdown-item-text">
+                        Notifications (258)
+                    </h6>
+                    <div class="slimscroll notification-list">
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item active">
+                            <div class="notify-icon bg-success"><i class="mdi mdi-cart-outline"></i></div>
+                            <p class="notify-details">Your order is placed<small class="text-muted">Dummy text of the
+                                printing and typesetting industry.</small></p>
+                        </a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-warning"><i class="mdi mdi-message"></i></div>
+                            <p class="notify-details">New Message received<small class="text-muted">You have 87 unread
+                                messages</small></p>
+                        </a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-info"><i class="mdi mdi-martini"></i></div>
+                            <p class="notify-details">Your item is shipped<small class="text-muted">It is a long
+                                established fact that a reader will</small></p>
+                        </a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-primary"><i class="mdi mdi-cart-outline"></i></div>
+                            <p class="notify-details">Your order is placed<small class="text-muted">Dummy text of the
+                                printing and typesetting industry.</small></p>
+                        </a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-danger"><i class="mdi mdi-message"></i></div>
+                            <p class="notify-details">New Message received<small class="text-muted">You have 87 unread
+                                messages</small></p>
+                        </a>
+                    </div>
+                    <!-- All-->
+                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+                        View all <i class="fi-arrow-right"></i>
+                    </a>
+                </div>
+            </li>
+
+            <li class="hidden-sm">
+                <a class="nav-link waves-effect waves-light" href="javascript:void(0);" id="btn-fullscreen">
+                    <i class="mdi mdi-fullscreen nav-icon"></i>
+                </a>
+            </li>
+
+            <!--个人信息-->
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#"
+                   role="button"
+                   aria-haspopup="false" aria-expanded="false">
+                    <img src="../assets/images/users/user-1.jpg" alt="profile-user" class="rounded-circle"/>
+                    <span class="ml-1 nav-user-name hidden-sm"> ${sessionScope.user.name} <i
+                            class="mdi mdi-chevron-down"></i> </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
+                    <a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
+                    <a class="dropdown-item" href="#"><i class="dripicons-gear text-muted mr-2"></i> Settings</a>
+                    <a class="dropdown-item" href="#"><i class="dripicons-lock text-muted mr-2"></i> Lock screen</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="dripicons-exit text-muted mr-2"></i> 退出登录</a>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled topbar-nav mb-0">
+
+            <li>
+                <button class="button-menu-mobile nav-link waves-effect waves-light">
+                    <i class="mdi mdi-menu nav-icon"></i>
+                </button>
+            </li>
+
+            <li class="hidden-sm">
+                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#"
+                   role="button"
+                   aria-haspopup="false" aria-expanded="false">
+                    <i class="mdi mdi-library-plus mr-2"></i>工具 <i class="mdi mdi-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu">
+
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        Photoshop
+                    </a>
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        Visual Studio
+                    </a>
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        Sublime Text 3
+                    </a>
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        Phpstorm
+                    </a>
+
+                </div>
+            </li>
+            <li class="hidden-sm">
+                <a class="nav-link waves-effect waves-light" href="../landing/index.html" target="_blank">
+                    <i class="mdi mdi-airplane mr-2"></i>Landing
+                </a>
+            </li>
+        </ul>
+
+    </nav>
+    <!-- end navbar-->
+</div>
+<!-- Top Bar End -->
+
+<div class="page-wrapper">
+    <!-- 左边导航栏Left Sidenav -->
+    <div class="left-sidenav">
+        <ul class="metismenu left-sidenav-menu" id="side-nav">
+
+            <li class="menu-title">Main</li>
+
+            <!--左边导航栏-工作台-->
+            <li>
+                <a href="index_test.html">
+                    <i class="mdi mdi-speedometer"></i><span>工作台</span>
+                </a>
+            </li>
+            <!--左边导航栏-工作台-->
+
+
+            <li class="menu-title">Components</li>
+
+            <!--市场活动-->
+            <li>
+                <a href="workbench/activity/index.jsp" target="workFrame">
+                    <i class="mdi mdi-calendar"></i><span>市场活动</span>
+                </a>
+            </li>
+
+            <!--客户-->
+            <li>
+                <a href="workbench/contacts/index.jsp" target="workFrame">
+                    <i class="mdi mdi-calendar"></i><span>客户</span>
+                </a>
+            </li>
+
+            <!--联系人-->
+            <li>
+                <a href="workbench/contacts/index.jsp" target="workFrame">
+                    <i class="mdi mdi-calendar"></i><span>联系人</span>
+                </a>
+            </li>
+
+            <!--线索-->
+            <li>
+                <a href="workbench/clue/index.jsp" target="workFrame">
+                    <i class="mdi mdi-calendar"></i><span>线索</span>
+                </a>
+            </li>
+
+
+
+
+
+            <li>
+                <a href="javascript: void(0);"><i class="mdi mdi-chart-arc"></i><span>图表</span><span
+                        class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                <ul class="nav-second-level" aria-expanded="false">
+                    <li><a href="workbench/chart/transaction/index.jsp" target="workFrame">交易统计表</a></li>
+                </ul>
+            </li>
+
+
+
+        </ul>
+    </div>
+    <!-- 左边导航栏end left-sidenav-->
+
+
+    <!-- Page Content-->
+    <div class="page-content" style="border-width: 6px;">
+
+        <div class="container-fluid" style="border-width: 6px;">
+
+            <!--这是右上角得页面导航-->
+            <!-- Page-Title -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="float-right">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index_test.html;">CRM</a></li>
+                                <li class="breadcrumb-item active">工作台</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">工作台</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title end breadcrumb -->
+        </div><!-- container -->
+
+        <iframe style="border-width: 2px; width: 100%; height: 90%;" name="workFrame">
+
+
+        </iframe>
+
+
+        <footer class="footer text-center text-sm-left">
+            © 2018-2019 CRM <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i
+                class="mdi mdi-heart text-danger"></i> by <a href="http://www.bootstrapmb.com/">ED</a></span>
+        </footer>
+    </div>
+    <!-- end page content -->
+</div>
+<!-- end page-wrapper -->
+
+
+<!-- jQuery  -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/metisMenu.min.js"></script>
+<script src="../assets/js/waves.min.js"></script>
+<script src="../assets/js/jquery.slimscroll.min.js"></script>
+
+<!--Plugins-->
+<script src="../assets/plugins/morris/morris.min.js"></script>
+<script src="../assets/plugins/raphael/raphael-min.js"></script>
+<script src="../assets/plugins/metro/MetroJs.min.js"></script>
+<script src="../assets/plugins/jquery-knob/excanvas.js"></script>
+<script src="../assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+<script src="../assets/pages/jquery.dashboard.init.js"></script>
+<!-- App js -->
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

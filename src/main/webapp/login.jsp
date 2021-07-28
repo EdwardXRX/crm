@@ -32,7 +32,6 @@
 
     <script>
         $(function () {
-
             if (window.top != window) {
                 window.top.location = window.location;
             }
@@ -43,6 +42,7 @@
             $("#submitBtn").click(function () {
                 login();
             });
+
             $(window).keydown(function (event) {
                 if (event.keycode == 13) {
                     login();
@@ -105,7 +105,7 @@
 
                 <div class="px-3">
                     <h4 class="text-muted font-18 mb-2 text-center">Welcome Back !</h4>
-                    <p class="text-muted text-center">Sign in to continue to Amezia.</p>
+                    <p class="text-muted text-center">Sign in to continue to CRM.</p>
 
                     <form class="form-horizontal my-4" action="workbench/index.html">
 

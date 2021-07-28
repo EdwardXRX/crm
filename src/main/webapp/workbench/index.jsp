@@ -39,7 +39,7 @@
             });
 
 
-            window.open("workbench/main/index.jsp", "workareaFrame");
+            window.open("workbench/main/index.jsp", "workFrame");
 
             $("#myInformationBtn").click(function () {
 
@@ -102,8 +102,7 @@
                     })
                 }
             })
-        })
-        ;
+        });
     </script>
 </head>
 <body>

@@ -28,8 +28,6 @@ import java.util.Map;
 @Service("ActivityServiceImpl")
 public class ActivityServiceImpl implements ActivityService {
 
-
-
     @Resource
     private ActivityDao activityDao;
 
